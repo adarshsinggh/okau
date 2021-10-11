@@ -64,11 +64,16 @@ class _HomePageState extends State<HomePage> {
   _getHomePageData() async {
     try {
       bool showChallenge = false;
+
       DataUpdate dataUpdate = DataUpdate();
+
       SharedPreferences sp = await SharedPreferences.getInstance();
+
       DataUpdateRepo dataUpdateRepo = DataUpdateRepo();
       List<Map<String, dynamic>> list = await dataUpdateRepo.findBySno();
+
       if (list.isEmpty) {
+        print('if-------------------------------------------------------------');
         dataUpdate =
             DataUpdate(beatDistraction: "1", dailyAppOpening: "1", dailyTask: "1", dailyTaskCompletion: "1", dailyTaskData: "1", reward: "1", timerPage: "1", weeklyTask: "1", challengeAccept: "1");
         String dateTimeNow = DateTime.now().toString();
@@ -86,6 +91,7 @@ class _HomePageState extends State<HomePage> {
 
         dataUpdateRepo.insertIntoDataUpdate(update);
       } else {
+        print('else-------------------------------------------------------------');
         DataUpdate update = DataUpdate();
         for (var a in list) {
           String dateTimeNow = DateTime.now().toString();
@@ -260,13 +266,14 @@ class _HomePageState extends State<HomePage> {
         }
 
         if (resbody.containsKey('dailyTaskCompletion')) {
-          txn.delete('daily_task_completion');
-          print("daily_task_completion deleted");
-          List datas = jsonDecode(resbody['dailyTaskCompletion']);
-          for (var a in datas) {
-            txn.insert('daily_task_completion', a);
-          }
-          print("daily_task_completion inserted");
+          //It will sync in OTP page
+          // txn.delete('daily_task_completion');
+          // print("daily_task_completion deleted");
+          // List datas = jsonDecode(resbody['dailyTaskCompletion']);
+          // for (var a in datas) {
+          //   txn.insert('daily_task_completion', a);
+          // }
+          // print("daily_task_completion inserted");
           // List<Map<String, dynamic>> list = await txn.rawQuery("select * from daily_task_completion");
           // print("daily_task_completion printing");
           // print(list);
@@ -614,8 +621,10 @@ class _HomePageState extends State<HomePage> {
               ),
             );
           }else{
-            return const Center(
-              child: CircularProgressIndicator(),
+            return const Scaffold(
+              body:  Center(
+                child: CircularProgressIndicator(color: Colors.black,),
+              ),
             );
           }
 

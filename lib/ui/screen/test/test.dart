@@ -43,12 +43,12 @@ class _TestState extends State<Test> with TickerProviderStateMixin {
   List _testQuestions = [];
   int _totalSecond = 0;
   Map<String, int> _questionTiming = Map();
-  static const List<IconData> icons = const [
+  static const List<IconData> icons =  [
     Icons.check_circle_outline,
     Icons.info_outline,
     Icons.format_align_left_rounded,
   ];
-  static const List<String> iconsText = const ["Submit", "Current Section Instruction", "Test Instruction"];
+  static const List<String> iconsText =  ["Submit", "Current Section Instruction", "Test Instruction"];
   DateTime _currentBackPressTime;
   Future<bool> _onWillPop() {
     DateTime now = DateTime.now();
@@ -97,7 +97,7 @@ class _TestState extends State<Test> with TickerProviderStateMixin {
             timer.cancel();
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(
-                builder: (context) => TestSummary(_testQuestions, _answerMap, _bookmarkMap, _FORMATTED_TEST_DURATION, sno, testType, course, subject, unit, chapter, _totalSecond, _questionTiming),
+                builder: (context) => TestSummary(_testQuestions, _answerMap, _bookmarkMap, _FORMATTED_TEST_DURATION, sno, testType, course, subject, unit, chapter, _totalSecond, _questionTiming,false,timer),
               ),
             );
           } else {
@@ -147,7 +147,7 @@ class _TestState extends State<Test> with TickerProviderStateMixin {
       _noOFQuestions = _testQuestions.length;
     }
     startTimer();
-    _controllerFloat = new AnimationController(
+    _controllerFloat =  AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 300),
     );
@@ -166,7 +166,7 @@ class _TestState extends State<Test> with TickerProviderStateMixin {
       appBar: AppBar(
         iconTheme: IconThemeData(color: whiteColor),
         title: Text(
-          _toolBarName == null ? "no tool bar" : _toolBarName,
+          _toolBarName ?? "no tool bar",
           style: TextStyle(color: whiteColor),
         ),
         brightness: Brightness.dark,
@@ -178,7 +178,7 @@ class _TestState extends State<Test> with TickerProviderStateMixin {
         child: _testQuestions.isEmpty
             ? Container(
                 alignment: Alignment.center,
-                child: Text(
+                child:const Text(
                   "No Question",
                   style: TextStyle(
                     fontSize: 40,
@@ -196,35 +196,35 @@ class _TestState extends State<Test> with TickerProviderStateMixin {
               ),
       ),
       bottomNavigationBar: buttonRow(),
-      floatingActionButton: new Column(
+      floatingActionButton:  Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.end,
-        children: new List.generate(icons.length, (int index) {
-          Widget child = new Container(
+        children:  List.generate(icons.length, (int index) {
+          Widget child =  Container(
             height: 70.0,
 //            width: 110.0,
             alignment: FractionalOffset.topCenter,
-            child: new ScaleTransition(
-                scale: new CurvedAnimation(
+            child:  ScaleTransition(
+                scale:  CurvedAnimation(
                   parent: _controllerFloat,
-                  curve: new Interval(0.0, 1.0 - index / icons.length / 2.0, curve: Curves.fastOutSlowIn),
+                  curve:  Interval(0.0, 1.0 - index / icons.length / 2.0, curve: Curves.fastOutSlowIn),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Container(
-                      padding: EdgeInsets.all(5),
+                      padding:const EdgeInsets.all(5),
                       decoration: BoxDecoration(color: Colors.black54, borderRadius: BorderRadius.circular(5)),
                       child: Text(
                         iconsText[index],
-                        style: TextStyle(color: Colors.white),
+                        style:const TextStyle(color: Colors.white),
                       ),
                     ),
                     FloatingActionButton(
                       backgroundColor: firstColor,
                       mini: true,
                       heroTag: null,
-                      child: new Icon(icons[index], color: Colors.white),
+                      child:  Icon(icons[index], color: Colors.white),
                       onPressed: () {
                         _floatingButtonClick(index);
                       },
@@ -235,16 +235,16 @@ class _TestState extends State<Test> with TickerProviderStateMixin {
           return child;
         }).toList()
           ..add(
-            new FloatingActionButton(
+             FloatingActionButton(
               heroTag: null,
               backgroundColor: firstColor,
-              child: new AnimatedBuilder(
+              child:  AnimatedBuilder(
                 animation: _controllerFloat,
                 builder: (BuildContext context, Widget child) {
-                  return new Transform(
-                    transform: new Matrix4.rotationZ(_controllerFloat.value * 0.5 * math.pi),
+                  return  Transform(
+                    transform:  Matrix4.rotationZ(_controllerFloat.value * 0.5 * math.pi),
                     alignment: FractionalOffset.center,
-                    child: new Icon(_controllerFloat.isDismissed ? Icons.add : Icons.close),
+                    child:  Icon(_controllerFloat.isDismissed ? Icons.add : Icons.close),
                   );
                 },
               ),
@@ -277,9 +277,9 @@ class _TestState extends State<Test> with TickerProviderStateMixin {
               children: [
                 Container(
                   width: MediaQuery.of(context).size.width * 5 / 10,
-                  padding: EdgeInsets.all(5),
+                  padding:const EdgeInsets.all(5),
                   decoration: BoxDecoration(border: Border.all(color: firstColor), borderRadius: BorderRadius.circular(5)),
-                  margin: EdgeInsets.only(left: 10),
+                  margin:const EdgeInsets.only(left: 10),
                   child: DropdownButtonHideUnderline(
                     child: DropdownButton<String>(
                       value: _testName,
@@ -290,9 +290,9 @@ class _TestState extends State<Test> with TickerProviderStateMixin {
                         fontWeight: FontWeight.w600,
                       ),
                       items: <String>[_testName].map((String value) {
-                        return new DropdownMenuItem<String>(
+                        return  DropdownMenuItem<String>(
                           value: value,
-                          child: new Text(value),
+                          child:  Text(value),
                         );
                       }).toList(),
                       onChanged: (value) {
@@ -303,20 +303,20 @@ class _TestState extends State<Test> with TickerProviderStateMixin {
                     ),
                   ),
                 ),
-                Spacer(),
+                const Spacer(),
                 Container(
-                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                  padding:const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(50),
                     color: firstColor,
                   ),
                   child: Row(
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.access_time_rounded,
                         size: 15,
                       ),
-                      SizedBox(
+                      const  SizedBox(
                         width: 3,
                       ),
                       Text(
@@ -804,7 +804,7 @@ class _TestState extends State<Test> with TickerProviderStateMixin {
     if (index == 0) {
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => TestSummary(_testQuestions, _answerMap, _bookmarkMap, _FORMATTED_TEST_DURATION, sno, testType, course, subject, unit, chapter, _totalSecond, _questionTiming),
+          builder: (context) => TestSummary(_testQuestions, _answerMap, _bookmarkMap, _FORMATTED_TEST_DURATION, sno, testType, course, subject, unit, chapter, _totalSecond, _questionTiming,true,_timer),
         ),
       );
     }

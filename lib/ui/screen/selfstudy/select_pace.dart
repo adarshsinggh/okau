@@ -20,12 +20,12 @@ class SelectThePace extends StatefulWidget {
   const SelectThePace(this.backButtonWillWork, {Key key}) : super(key: key);
   @override
   // ignore: no_logic_in_create_state
-  _SelectThePaceState createState() => _SelectThePaceState(backButtonWillWork);
+  _SelectThePaceState createState() => _SelectThePaceState();
 }
 
 class _SelectThePaceState extends State<SelectThePace> {
-  _SelectThePaceState(this.backButtonWillWork);
-  final bool backButtonWillWork;
+  _SelectThePaceState();
+
   String _radioValue; //Initial definition of radio button value
   String choice;
   bool customProgram = false;
@@ -114,13 +114,13 @@ class _SelectThePaceState extends State<SelectThePace> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () async => backButtonWillWork,
+      onWillPop: () async => widget.backButtonWillWork,
       child: Scaffold(
         appBar: AppBar(
           title: 'Self Study Program Pace'.text.make(),
           centerTitle: true,
           elevation: 0,
-          leading: backButtonWillWork
+          leading: widget.backButtonWillWork
               ? IconButton(
                   onPressed: () {
                     Navigator.of(context).pop();
@@ -579,7 +579,7 @@ class _SelectThePaceState extends State<SelectThePace> {
 
           PaceRepo paceRepo = PaceRepo();
           int sno=await paceRepo.insertIntoPace(pace);
-          print("-----------------------------------$sno");
+
           pace.sno=sno;
           FirebaseFirestore.instance.collection('pace').add(pace.toJson());
 

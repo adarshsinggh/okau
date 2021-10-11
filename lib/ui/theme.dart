@@ -20,6 +20,9 @@ class AppTheme {
   static const Color _darkOnPrimaryColor = Colors.white;
 
   static final ThemeData lightTheme = ThemeData(
+      textSelectionTheme:const TextSelectionThemeData(
+        cursorColor: Colors.grey, //thereby
+      ),
       scaffoldBackgroundColor: _lightPrimaryColor,
       // accentColor: _lightSeconderyColor,
       primaryColor: _darkSeconderyColor,

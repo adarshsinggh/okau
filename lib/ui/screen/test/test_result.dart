@@ -44,52 +44,64 @@ class _TestResultState extends State<TestResult> with SingleTickerProviderStateM
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Result"),
-        actions: [
-          IconButton(
-              icon: Icon(Icons.exit_to_app),
-              onPressed: () {
-                Navigator.of(context).pushReplacement(MaterialPageRoute(
-                  builder: (context) => HomePage(),
-                ));
-              })
-        ],
-        bottom: TabBar(
-          tabs: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                new Tab(
-                  child: Text("Score"),
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text("Result"),
+          leading: const Icon(null),
+          actions: [
+            IconButton(
+                icon:const Icon(Icons.exit_to_app),
+                onPressed: () {
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    builder: (context) =>const HomePage(),
+                  ));
+                })
+          ],
+          bottom: TabBar(
+            tabs: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  new Tab(
+                    child: Text("Score"),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  new Tab(
+                    child: Text("Analysis"),
+                  ),
+                ],
+              )
+            ],
+            controller: _tabController,
+          ),
+        ),
+        body: TabBarView(
+          children: [
+            Container(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    resultCard(),
+                    messageCard(),
+                    ElevatedButton(onPressed: (){
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (context) =>const HomePage(),
+                      ));
+                    }, child:const Text('Go to home',style: TextStyle(color: Colors.white),))
+                  ],
                 ),
-              ],
+              ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                new Tab(
-                  child: Text("Analysis"),
-                ),
-              ],
-            )
+            Solution(_answerMap, _bookmarkMap, _testData,widget._FORMATTED_TEST_DURATION),
           ],
           controller: _tabController,
         ),
-      ),
-      body: TabBarView(
-        children: [
-          Container(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [resultCard(), messageCard()],
-              ),
-            ),
-          ),
-          Solution(_answerMap, _bookmarkMap, _testData,widget._FORMATTED_TEST_DURATION),
-        ],
-        controller: _tabController,
       ),
     );
   }

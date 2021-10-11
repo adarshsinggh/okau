@@ -26,17 +26,17 @@ class ProgressBar extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                taskText == null ? '' : taskText,
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                taskText ?? '',
+                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Text(
-                taskText1 == null ? '' : taskText1,
-                style: TextStyle(fontSize: 16),
+                taskText1 ?? '',
+                style: const TextStyle(fontSize: 16),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
             ],
@@ -45,20 +45,20 @@ class ProgressBar extends StatelessWidget {
         Expanded(
           flex: 1,
           child: CircularPercentIndicator(
-              radius: radius == null ? 140 : radius,
+              radius: radius ?? 140,
               lineWidth: 10.0,
               animation: true,
-              percent: progressValue / 100,
+              percent: progressValue,
               center: Text(
-                progressValue.toStringAsFixed(0) + "%",
-                style: TextStyle(
+                (progressValue*100).toStringAsFixed(2) + "%",
+                style: const TextStyle(
                   fontSize: 20.0,
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              backgroundColor: Color.fromARGB(30, 128, 112, 254),
+              backgroundColor: const Color.fromARGB(30, 128, 112, 254),
               circularStrokeCap: CircularStrokeCap.round,
-              linearGradient: LinearGradient(
+              linearGradient: const LinearGradient(
                   colors: <Color>[Colors.deepPurpleAccent, Colors.deepPurple],
                   stops: <double>[0.25, 0.75])),
         ),

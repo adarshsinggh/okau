@@ -24,7 +24,7 @@ class DBHelper {
     //print(directory.path);
     var chatsDB = await openDatabase(
       path,
-      version: 2,
+      version: 3,
       onCreate: _createDB,
     );
 
@@ -100,8 +100,9 @@ class DBHelper {
     await db.execute("create table instruction_data(sno integer primary key autoincrement,"
         "enteredBy text, enteredDate text, instructions text, updatedBy text, updatedDate text, instructionSno text)");
 
-    await db.execute("create table register(sno integer primary key autoincrement,"
-        "block text, mobileno text, accounttypeId text, courseId text, firstMonday text, joiningDate text, enteredDate text)");
+    await db.execute("create table register(sno integer primary key autoincrement, profilePicturePath text,"
+        "block text, mobileno text, accountType text, courseId text, firstMonday text, joiningDate text, enteredDate text,name text,email text,"
+        "dob text,fatherName text,currentClass text, target text, schoolName text, marks10 text, marks12 text, address text)");
 
     // await db.execute("create table challenge_accept(sno integer primary key autoincrement, enteredBy text, enteredDate text,"
     //     "status text, week integer, registerSno text)");

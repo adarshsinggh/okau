@@ -24,87 +24,93 @@ class _SpinnerClassState extends State<SpinnerClass> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 20),
-            decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
-            child: Column(
-              children: [
-                Container(
-                  width: double.infinity,
-                  padding: EdgeInsets.all(20),
-                  height: MediaQuery.of(context).size.height * 0.4,
-                  child: FortuneWheel(
-                    indicators: [
-                      FortuneIndicator(
-                          child: Image.asset(
-                            'assets/icons/spineer.png',
-                            fit: BoxFit.contain,
-                            height: 60,
-                          ),
-                          alignment: Alignment.center)
-                    ],
-                    physics: CircularPanPhysics(
-                      duration: Duration(seconds: 1),
-                      curve: Curves.decelerate,
-                    ),
-                    duration: Duration(seconds: 10),
-                    animateFirst: false,
-                    selected: _selected,
-                    onAnimationEnd: () {
-                      _updateDailyTask();
+    // ignore: avoid_unnecessary_containers
+    return  Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          margin: const EdgeInsets.symmetric(horizontal: 20),
+          decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
+          child: Column(
+            children: [
+              Container(
+                width: double.infinity,
+                padding:const EdgeInsets.all(20),
+                height: MediaQuery.of(context).size.height * 0.4,
+                child: FortuneWheel(
+                  indicators: [
+                    FortuneIndicator(
+                        child: Image.asset(
+                          'assets/icons/spineer.png',
+                          fit: BoxFit.contain,
+                          height: 60,
+                        ),
+                        alignment: Alignment.center)
+                  ],
+                  physics: CircularPanPhysics(
+                    duration:const Duration(seconds: 1),
+                    curve: Curves.decelerate,
+                  ),
+                  duration:const Duration(seconds: 10),
+                  animateFirst: false,
+                  selected: _selected,
+                  onAnimationEnd: () {
+                    _updateDailyTask();
+                  },
+                  items: List.generate(
+                    _spinData.length,
+                        (index) {
+                      return FortuneItem(
+                          style: FortuneItemStyle(
+                              color: AppColors.tileIconColors[index],
+                              textStyle:const TextStyle(
+                                color: Colors.white,
+                              ),
+                              textAlign: TextAlign.center),
+                          child: Text(_spinData[index]['taskName']));
                     },
-                    items: List.generate(
-                      _spinData.length,
-                      (index) {
-                        return FortuneItem(
-                            style: FortuneItemStyle(
-                                color: AppColors.tileIconColors[index],
-                                textStyle: TextStyle(
-                                  color: Colors.white,
-                                ),
-                                textAlign: TextAlign.center),
-                            child: Text(_spinData[index]['taskName']));
-                      },
-                    ),
                   ),
                 ),
-                Container(
-                  width: double.infinity,
-                  padding: EdgeInsets.fromLTRB(20, 20, 20, 5),
-                  height: MediaQuery.of(context).size.height * 0.15,
-                  child: Center(
-                    child: CustomButton(
-                      verpad: EdgeInsets.symmetric(
-                        vertical: 5,
-                        horizontal: 40,
-                      ),
-                      brdRds: 30,
-                      btnClr: Colors.green,
-                      buttonText: 'SPIN',
-                      onPressed: () {
-                        try {
-                          print(_selected);
-                          var _random = new Random();
-                          setState(() {
+              ),
+              Container(
+                width: double.infinity,
+                padding:const EdgeInsets.fromLTRB(20, 20, 20, 5),
+                height: MediaQuery.of(context).size.height * 0.15,
+                child: Center(
+                  child: CustomButton(
+                    verpad:const EdgeInsets.symmetric(
+                      vertical: 5,
+                      horizontal: 40,
+                    ),
+                    brdRds: 30,
+                    btnClr: Colors.green,
+                    buttonText: 'SPIN',
+                    onPressed: () {
+                      try {
+                        var _random =  Random();
+                        setState(() {
+                          _selected = _random.nextInt(6);
+                          if(_selected==0){
                             _selected = _random.nextInt(6);
-                            print(_selected);
-                          });
-                        } catch (e) {
-                          print(e);
-                        }
-                      },
-                    ),
+                            if(_selected==0){
+                              _selected = _random.nextInt(6);
+                              if(_selected==0){
+                                _selected = _random.nextInt(6);
+                              }
+                            }
+                          }
+                        });
+                      } catch (e) {
+                        print(e);
+                      }
+                    },
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 // FortuneWheel(
@@ -154,10 +160,11 @@ class _SpinnerClassState extends State<SpinnerClass> {
       // http.Response response = await http.post(
       //   Uri.encodeFull(url),
       // );
-      DBHelper dbHelper = new DBHelper();
+      DBHelper dbHelper =  DBHelper();
       Database database = await dbHelper.database;
       String sql = "select sno from daily_task_completion "
           "where registerSno='${sp.getString("studentSno")}' and spinDate='${DateTime.now().toString().split(" ")[0]}' ";
+      print(sql);
       List<Map<String, dynamic>> list = await database.rawQuery(sql);
       print("-----------------------------------$list");
       if (list.isEmpty) {
@@ -166,7 +173,8 @@ class _SpinnerClassState extends State<SpinnerClass> {
             "'${DateTime.now().toString().split(" ")[0]}',"
             "'spined','${DateTime.now().toString()}','new')";
         print(sql2);
-        await database.rawInsert(sql2);
+        int x = await database.rawInsert(sql2);
+        print(x);
       } else {
         String sql2 =
             "update daily_task_completion set dailyTaskSno='${_spinData[_selected - 1]['sno'].toString()}', status='spined', onlineStatus='new' where registerSno='${sp.getString("studentSno")}' "

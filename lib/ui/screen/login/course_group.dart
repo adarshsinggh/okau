@@ -40,11 +40,12 @@ class _CourseGroupState extends State<CourseGroup> {
   Future _getCourse() async {
     try {
       var url = baseUrl + "getCourseGroup";
-      //print(url);
+      print(url);
       var response = await http.get(url);
       List list = jsonDecode(response.body);
       await _dbHelper.insertCourseGroupBatch(list);
       _allData = await _dbHelper.getCourseType();
+      print(_allData);
     } catch (e) {
       //print('_getCourseGroup : ' + e.toString());
     }
@@ -104,7 +105,7 @@ class _CourseGroupState extends State<CourseGroup> {
                                                   )
                                                 : Container(),
                                           ),
-                                          _allData[i]['detail'][j]['courseName'].text.make().p(8),
+                                          Text(_allData[i]['detail'][j]['courseName']).text.make().p(8)
                                         ],
                                       ).centered(),
                                       subtitle: Text(
@@ -114,7 +115,7 @@ class _CourseGroupState extends State<CourseGroup> {
                                       onTap: () {
                                         setState(() {
                                           selectedIndex = i;
-                                          selectedCourseSno = _allData[i]['detail'][j]['sno'].toString();
+                                          selectedCourseSno = _allData[i]['detail'][j]['courseSno'].toString();
                                           print(selectedCourseSno);
                                           showBatch(context);
                                         });
@@ -167,6 +168,7 @@ class _CourseGroupState extends State<CourseGroup> {
         _otpSentAlertBox(context);
         SharedPreferences sp = await SharedPreferences.getInstance();
         var url = baseUrl + "saveRegistration?accountType=1&course=" + selectedCourseSno + "&mobile=" + mobile.toString();
+        print(url);
         http.Response response = await http.post(
           Uri.encodeFull(url),
         );
@@ -193,12 +195,17 @@ class _CourseGroupState extends State<CourseGroup> {
           batch.delete('topic');
           batch.delete('register');
 
+          String sql="insert into challenge_accept (enteredBy,enteredDate,status,week,registerSno) "
+              "values('default','${DateTime.now().toString()}','accepted','0','${recentData['studentSno'].toString()}')";
+          print(sql);
+          batch.rawInsert(sql);
+
           Map<String, dynamic> registerMap = jsonDecode(recentData['register']);
           Register register = Register();
           register.sno = recentData['studentSno'];
-          register.block = registerMap['block'];
+          // register.block = registerMap['block'];
           register.mobileno = registerMap['mobileno'];
-          register.accounttypeId = "1";
+          register.accountType = "1";
           register.courseId = selectedCourseSno.toString();
           register.firstMonday = registerMap['firstMonday'];
           register.joiningDate = registerMap['joiningDate'];

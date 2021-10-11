@@ -517,9 +517,9 @@ class _OtpScreenState extends State<OtpScreen> with SingleTickerProviderStateMix
           Map<String, dynamic> registerMap = jsonDecode(body['register']);
           Register register = Register();
           register.sno = body['studentSno'];
-          register.block = registerMap['block'];
+          // register.block = registerMap['block'];
           register.mobileno = registerMap['mobileno'];
-          register.accounttypeId = "1";
+          register.accountType = "1";
           register.courseId = body['courseSno'];
           register.firstMonday = registerMap['firstMonday'];
           register.joiningDate = registerMap['joiningDate'];

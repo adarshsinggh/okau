@@ -55,7 +55,7 @@ class _CourseSelectionState extends State<CourseSelection> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Available Programs"),
+        title:const Text("Available Programs",style: TextStyle(color: Colors.purpleAccent),),
         centerTitle: true,
         elevation: 0,
       ),
@@ -64,302 +64,50 @@ class _CourseSelectionState extends State<CourseSelection> {
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             return SafeArea(
-              child: Container(
-                child: RefreshIndicator(
-                  onRefresh: () async {
-                    getCourse();
-                  },
-                  child: SingleChildScrollView(
-                    physics: BouncingScrollPhysics(),
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: 30,
-                        ),
-                        // Card(
-                        //   clipBehavior: Clip.antiAlias,
-                        //   margin: EdgeInsets.symmetric(horizontal: 15),
-                        //   child: Column(
-                        //     children: [
-                        //       Container(
-                        //         width: double.infinity,
-                        //         padding: EdgeInsets.all(5),
-                        //         decoration: BoxDecoration(
-                        //           color: firstColor,
-                        //         ),
-                        //         child: Column(
-                        //           children: [
-                        //             Text(
-                        //               'Engineering Program',
-                        //               style: TextStyle(
-                        //                   color: whiteColor,
-                        //                   fontSize: 22,
-                        //                   fontWeight: FontWeight.bold),
-                        //               textAlign: TextAlign.center,
-                        //             ),
-                        //             Text(
-                        //               'IIT JEE-Main/Advance',
-                        //               style: TextStyle(
-                        //                   color: whiteColor,
-                        //                   fontSize: 14,
-                        //                   fontWeight: FontWeight.normal),
-                        //               textAlign: TextAlign.center,
-                        //             ),
-                        //           ],
-                        //         ),
-                        //       ),
-                        //       Container(
-                        //         width: double.infinity,
-                        //         padding: EdgeInsets.all(5),
-                        //         child: Column(
-                        //           children: [
-                        //             ListTile(
-                        //               selected: 0 == selectedIndex,
-                        //               title: Stack(
-                        //                 alignment: Alignment.center,
-                        //                 children: [
-                        //                   Align(
-                        //                     alignment: Alignment.centerRight,
-                        //                     child: selectedIndex == 0
-                        //                         ? Icon(Icons.check)
-                        //                         : Container(),
-                        //                   ),
-                        //                   Padding(
-                        //                     padding: const EdgeInsets.all(8.0),
-                        //                     child: Text(
-                        //                       courseList[0]['courseName'],
-                        //                       textAlign: TextAlign.center,
-                        //                     ),
-                        //                   ),
-                        //                 ],
-                        //               ),
-                        //               subtitle: Text(
-                        //                 'Two Year Foundation Course ',
-                        //                 textAlign: TextAlign.center,
-                        //               ),
-                        //               onTap: () {
-                        //                 setState(() {
-                        //                   selectedIndex = 0;
-                        //                   selectedCourseSno =
-                        //                       courseList[0]['sno'];
-                        //                 });
-                        //                 showBatch(context);
-                        //                 print(selectedCourseSno);
-                        //               },
-                        //             ),
-                        //             ListTile(
-                        //               selected: 3 == selectedIndex,
-                        //               title: Stack(
-                        //                 alignment: Alignment.center,
-                        //                 children: [
-                        //                   Align(
-                        //                     alignment: Alignment.centerRight,
-                        //                     child: selectedIndex == 3
-                        //                         ? Icon(Icons.check)
-                        //                         : Container(),
-                        //                   ),
-                        //                   Padding(
-                        //                     padding: const EdgeInsets.all(8.0),
-                        //                     child: Text(
-                        //                       courseList[3]['courseName'],
-                        //                       textAlign: TextAlign.center,
-                        //                     ),
-                        //                   ),
-                        //                 ],
-                        //               ),
-                        //               subtitle: Text(
-                        //                 'Two Year Foundation Course ',
-                        //                 textAlign: TextAlign.center,
-                        //               ),
-                        //               onTap: () {
-                        //                 setState(() {
-                        //                   selectedIndex = 3;
-                        //                   selectedCourseSno =
-                        //                       courseList[3]['sno'];
-                        //                 });
-                        //                 showBatch(context);
-                        //                 print(selectedCourseSno);
-                        //               },
-                        //             ),
-                        //             ListTile(
-                        //               selected: 4 == selectedIndex,
-                        //               title: Stack(
-                        //                 alignment: Alignment.center,
-                        //                 children: [
-                        //                   Align(
-                        //                     alignment: Alignment.centerRight,
-                        //                     child: selectedIndex == 4
-                        //                         ? Icon(Icons.check)
-                        //                         : Container(),
-                        //                   ),
-                        //                   Padding(
-                        //                     padding: const EdgeInsets.all(8.0),
-                        //                     child: Text(
-                        //                       courseList[4]['courseName'],
-                        //                       textAlign: TextAlign.center,
-                        //                     ),
-                        //                   ),
-                        //                 ],
-                        //               ),
-                        //               subtitle: Text(
-                        //                 'One Year Foundation Course ',
-                        //                 textAlign: TextAlign.center,
-                        //               ),
-                        //               onTap: () {
-                        //                 setState(() {
-                        //                   selectedIndex = 4;
-                        //                   selectedCourseSno =
-                        //                       courseList[4]['sno'];
-                        //                 });
-                        //                 showBatch(context);
-                        //                 print(selectedCourseSno);
-                        //               },
-                        //             ),
-                        //           ],
-                        //         ),
-                        //       )
-                        //     ],
-                        //   ),
-                        // ),
-                        // SizedBox(
-                        //   height: 30,
-                        // ),
-                        // Card(
-                        //   clipBehavior: Clip.antiAlias,
-                        //   margin: EdgeInsets.symmetric(horizontal: 15),
-                        //   child: Column(
-                        //     children: [
-                        //       Container(
-                        //         margin: EdgeInsets.only(bottom: 20),
-                        //         width: double.infinity,
-                        //         padding: EdgeInsets.all(5),
-                        //         decoration: BoxDecoration(
-                        //           color: firstColor,
-                        //         ),
-                        //         child: Column(
-                        //           children: [
-                        //             Text(
-                        //               'Medical UG Program',
-                        //               style: TextStyle(
-                        //                   color: whiteColor,
-                        //                   fontSize: 22,
-                        //                   fontWeight: FontWeight.bold),
-                        //               textAlign: TextAlign.center,
-                        //             ),
-                        //             Text(
-                        //               'NEET UG',
-                        //               style: TextStyle(
-                        //                   color: whiteColor,
-                        //                   fontSize: 14,
-                        //                   fontWeight: FontWeight.normal),
-                        //               textAlign: TextAlign.center,
-                        //             ),
-                        //           ],
-                        //         ),
-                        //       ),
-                        //       ListTile(
-                        //         selected: 5 == selectedIndex,
-                        //         title: Stack(
-                        //           alignment: Alignment.center,
-                        //           children: [
-                        //             Align(
-                        //               alignment: Alignment.centerRight,
-                        //               child: selectedIndex == 5
-                        //                   ? Icon(Icons.check)
-                        //                   : Container(),
-                        //             ),
-                        //             Padding(
-                        //               padding: const EdgeInsets.all(8.0),
-                        //               child: Text(
-                        //                 courseList[5]['courseName'],
-                        //                 textAlign: TextAlign.center,
-                        //               ),
-                        //             ),
-                        //           ],
-                        //         ),
-                        //         subtitle: Text(
-                        //           'Two Year Foundation Course ',
-                        //           textAlign: TextAlign.center,
-                        //         ),
-                        //         onTap: () {
-                        //           setState(() {
-                        //             selectedIndex = 5;
-                        //             selectedCourseSno = courseList[5]['sno'];
-                        //           });
-                        //           showBatch(context);
-                        //           print(selectedCourseSno);
-                        //         },
-                        //       ),
-                        //       ListTile(
-                        //         selected: 6 == selectedIndex,
-                        //         title: Stack(
-                        //           alignment: Alignment.center,
-                        //           children: [
-                        //             Align(
-                        //               alignment: Alignment.centerRight,
-                        //               child: selectedIndex == 6
-                        //                   ? Icon(Icons.check)
-                        //                   : Container(),
-                        //             ),
-                        //             Padding(
-                        //               padding: const EdgeInsets.all(8.0),
-                        //               child: Text(
-                        //                 courseList[6]['courseName'],
-                        //                 textAlign: TextAlign.center,
-                        //               ),
-                        //             ),
-                        //           ],
-                        //         ),
-                        //         subtitle: Text(
-                        //           'One Year Foundation Course ',
-                        //           textAlign: TextAlign.center,
-                        //         ),
-                        //         onTap: () {
-                        //           setState(() {
-                        //             selectedIndex = 6;
-                        //             selectedCourseSno = courseList[6]['sno'];
-                        //           });
-                        //           showBatch(context);
-                        //           print(selectedCourseSno);
-                        //         },
-                        //       ),
-                        //     ],
-                        //   ),
-                        // ),
-                        ListView.builder(
-                          itemCount: courseList.length,
-                          shrinkWrap: true,
-                          primary: false,
-                          scrollDirection: Axis.vertical,
-                          itemBuilder: (context, i) {
-                            return GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  selectedIndex = i;
-                                  selectedCourseSno = courseList[i]['courseSno'];
-                                });
-                              },
-                              child: Padding(
-                                padding: EdgeInsets.all(10),
-                                child: Container(
-                                  padding: EdgeInsets.all(15),
-                                  width: MediaQuery.of(context).size.width,
-                                  decoration: BoxDecoration(
-                                      border: selectedIndex == i ? Border.all(color: firstColor, width: 2) : Border.all(color: Colors.transparent, width: 2),
-                                      borderRadius: BorderRadius.circular(10),
-                                      color: firstColor.withOpacity(0.1)),
-                                  child: Center(
-                                      child: Text(
-                                    courseList[i]['courseName'],
-                                    style: TextStyle(color: textColor, fontSize: 18, fontWeight: FontWeight.w600),
-                                  )),
-                                ),
+              child: RefreshIndicator(
+                onRefresh: () async {
+                  getCourse();
+                },
+                child: SingleChildScrollView(
+                  physics:const BouncingScrollPhysics(),
+                  child: Column(
+                    children: [
+                     const SizedBox(
+                        height: 30,
+                      ),
+                      ListView.builder(
+                        itemCount: courseList.length,
+                        shrinkWrap: true,
+                        primary: false,
+                        scrollDirection: Axis.vertical,
+                        itemBuilder: (context, i) {
+                          return GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                selectedIndex = i;
+                                selectedCourseSno = courseList[i]['courseSno'];
+                              });
+                            },
+                            child: Padding(
+                              padding:const EdgeInsets.all(10),
+                              child: Container(
+                                padding:const EdgeInsets.all(15),
+                                width: MediaQuery.of(context).size.width,
+                                decoration: BoxDecoration(
+                                    border: selectedIndex == i ? Border.all(color: firstColor, width: 2) : Border.all(color: Colors.transparent, width: 2),
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: firstColor.withOpacity(0.1)),
+                                child: Center(
+                                    child: Text(
+                                  courseList[i]['courseName'],
+                                  style: TextStyle(color: textColor, fontSize: 18, fontWeight: FontWeight.w600),
+                                )),
                               ),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -399,6 +147,7 @@ class _CourseSelectionState extends State<CourseSelection> {
         _otpSentAlertBox(context);
         SharedPreferences sp = await SharedPreferences.getInstance();
         var url = baseUrl + "saveRegistration?accountType=1&course=" + selectedCourseSno + "&mobile=" + mobile.toString();
+        print(url);
         http.Response response = await http.post(
           Uri.encodeFull(url),
         );
@@ -426,11 +175,11 @@ class _CourseSelectionState extends State<CourseSelection> {
           batch.delete('register');
 
           Map<String, dynamic> registerMap = jsonDecode(recentData['register']);
-          Register register = new Register();
+          Register register =  Register();
           register.sno = recentData['studentSno'];
-          register.block = registerMap['block'];
+          // register.block = registerMap['block'];
           register.mobileno = registerMap['mobileno'];
-          register.accounttypeId = "1";
+          register.accountType = "1";
           register.courseId = selectedCourseSno.toString();
           register.firstMonday = registerMap['firstMonday'];
           register.joiningDate = registerMap['joiningDate'];

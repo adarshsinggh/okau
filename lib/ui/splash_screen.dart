@@ -18,8 +18,9 @@ class SplashScreenPage extends StatefulWidget {
 class _SplashScreenPageState extends State<SplashScreenPage> {
   Timer _timer;
   int _second = 5; // set timer for 3 second and then direct to next page
-  SharedPreferences sp;
-  void _startTimer() {
+
+  void _startTimer()async {
+    SharedPreferences sp = await SharedPreferences.getInstance();
     const period = Duration(seconds: 1);
     _timer = Timer.periodic(period, (timer) {
       setState(() {
@@ -28,6 +29,7 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
       if (_second == 0) {
         _cancelFlashsaleTimer();
         if (sp.getBool("onboarding") != null) {
+          print(sp.getString("studentSno"));
           if (sp.getString("studentSno") == null) {
             Navigator.of(context).pushNamedAndRemoveUntil(logIn, (route) => false);
           } else {
@@ -58,7 +60,7 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
   }
 
   _initializeSP() async {
-    sp = await SharedPreferences.getInstance();
+
   }
 
   @override
